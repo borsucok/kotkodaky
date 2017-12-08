@@ -46,6 +46,26 @@ class Grid extends Component {
             await API.join('Kotkodaky_8', 'kikirik');
             await this.refresh();
             this.autoRefresh();
+
+            // // napojime sa na socket
+            // // /gs-guide-websocket
+            // const ws = new WebSocket(API.websocketUrl());
+            // // ked sa spojenie otvori
+            // ws.onopen = () => {
+            //     console.log('Socket connectnuty');
+            // };
+
+            // ws.onmessage = (message) => {
+            //     console.log(message);
+            // };
+
+            // ws.onclose = function (msg) {
+            //     console.log('Socket close');
+            // }
+
+            // ws.onerror = function (event) {
+            //     console.log('Socket error', event);
+            // }
         }
         catch (e) {
             alert(e);
@@ -91,11 +111,10 @@ class Grid extends Component {
         if (newX > 19) {
             newX = 19;
         }
-        
+
         const newPos = { x: newX, y: newY };
         try {
             const moveResult = await API.move(newPos);
-            console.log(moveResult.message);
             if (['ACTION_REQUIRED', 'ACTION_POSSIBLE'].includes(moveResult.message)) {
                 this.setState({ me: newPos }, () => {
                     this.startAction();
@@ -108,7 +127,7 @@ class Grid extends Component {
             } else if (moveResult.message === 'INVALID_POSITION') {
                 // ta nic...
             } else {
-                console.log('API je nedokumentovane a toto je nepreskumany stav');
+                console.log(moveResult.message, 'API je nedokumentovane a toto je nepreskumany stav');
             }
         } catch (e) {
             alert(e);
@@ -120,13 +139,12 @@ class Grid extends Component {
             const akcia = await API.akcia();
             const odpoved = prompt(akcia.info);
             const odpr = await API.odpovedaj(odpoved);
-            alert(odpr);
-            // const odppr = parseInt(odpr);
-            // if (odppr === -1) {
-            //     alert('Zle');
-            // } else if (odppr === 1) {
-            //     console.log('CORRECT');
-            // }
+            const odppr = parseInt(odpr);
+            if (odppr === -1) {
+                alert('Zle');
+            } else if (odppr === 1) {
+                console.log('CORRECT');
+            }
         } catch (e) {
             alert(e);
         }
@@ -134,7 +152,7 @@ class Grid extends Component {
 
     drawAllElements = () => {
         this.state.elements.forEach((guy) => {
-            if(guy.type === 'user'){
+            if (guy.type === 'user') {
                 this.drawGuy(guy.x, guy.y)
             } else {
                 this.drawSword(guy.x, guy.y)
@@ -147,7 +165,7 @@ class Grid extends Component {
         x = x - 1;
         y = y - 1;
 
-        if(me){
+        if (me) {
             this.ctx.fillStyle = "red";
         } else {
             this.ctx.fillStyle = "black";
@@ -201,7 +219,7 @@ class Grid extends Component {
     redrawAll = () => {
         this.cleanAll();
         this.drawAllElements();
-        this.drawSword(3,6);
+        this.drawSword(3, 6);
     }
 
     refresh = async () => {
