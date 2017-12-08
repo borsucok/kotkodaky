@@ -12,22 +12,29 @@ class Grid extends Component {
                 x: 1, y: 1,
             },
             elements: [],
-        };
-        this.width = 570;
-        this.height = 570;
-        this.step = 30;
+          };
         this.ctx = null;
+        this.width = 760;
+        this.height = 760;
+        this.step = 40;
     }
 
     componentDidMount() {
         let canvas = document.getElementById('grid');
         let img = document.getElementById("sword");
 
+        let me =document.getElementById("me");
+        let person =document.getElementById("person");
+
+
         canvas.width = this.width;
         canvas.height = this.height;
         let ctx = canvas.getContext('2d');
         this.ctx = ctx;
         this.img = img;
+        this.me = me;
+        this.person = person;
+
         this.redrawAll();
         document.onkeydown = this.onClickKey;
 
@@ -165,45 +172,50 @@ class Grid extends Component {
         x = x - 1;
         y = y - 1;
 
-        if (me) {
-            this.ctx.fillStyle = "red";
+        // if(me){
+        //     this.ctx.fillStyle = "red";
+        // } else {
+        //     this.ctx.fillStyle = "black";
+        // }
+
+        if(me){
+            this.ctx.drawImage(this.me, x * this.step, y * this.step, this.step, this.step);
         } else {
-            this.ctx.fillStyle = "black";
+            this.ctx.drawImage(this.person, x * this.step, y * this.step, this.step, this.step);
         }
 
-        this.ctx.fillRect(x * this.step, y * this.step, this.step, this.step);
+        // this.ctx.fillRect(x * this.step, y * this.step, this.step, this.step);
     }
 
     drawSword = (x, y) => {
         x = x - 1;
         y = y - 1;
-        this.ctx.drawImage(this.img, x * this.step, y * this.step, 30, 30);
+        console.log(this.img);
+        this.ctx.drawImage(this.img, x * this.step, y * this.step, this.step, this.step);
     }
 
     drawGrid = (w, h, step) => {
+
         let ctx = this.ctx;
+        // ctx.drawImage(document.getElementById("grass"),0,0,this.width, this.height);
+
         ctx.beginPath();
         for (let x = 0; x <= w; x += step) {
             ctx.moveTo(x, 0);
             ctx.lineTo(x, h);
         }
-        // set the color of the line
-        // ctx.strokeStyle = 'rgb(255,0,0)';
+        ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.lineWidth = 1;
-        // the stroke will actually paint the current path
         ctx.stroke();
-        // for the sake of the example 2nd path
         ctx.beginPath();
         for (let y = 0; y <= h; y += step) {
             ctx.moveTo(0, y);
             ctx.lineTo(w, y);
         }
-        // set the color of the line
-        // ctx.strokeStyle = 'rgb(20,20,20)';
-        // just for fun
         ctx.lineWidth = 1;
-        // for your original question - you need to stroke only once
         ctx.stroke();
+
+
     }
 
     cleanAll = () => {
@@ -219,7 +231,6 @@ class Grid extends Component {
     redrawAll = () => {
         this.cleanAll();
         this.drawAllElements();
-        this.drawSword(3, 6);
     }
 
     refresh = async () => {
@@ -240,8 +251,11 @@ class Grid extends Component {
 
         return (
             <div>
-                <img id='sword' width={30} height={30} src={process.env.PUBLIC_URL + 'sword.png'} />
-                <canvas id="grid">
+                <img style={{display: 'none'}} id='grass' width={30} height={30} src={process.env.PUBLIC_URL + 'grass.jpg'}/>
+                <img style={{display: 'none'}} id='sword' width={30} height={30} src={process.env.PUBLIC_URL + 'sword.png'}/>
+                <img style={{display: 'none'}} id='person' width={30} height={30} src={process.env.PUBLIC_URL + 'person.png'}/>
+                <img style={{display: 'none'}} id='me' width={30} height={30} src={process.env.PUBLIC_URL + 'me.png'}/>
+                <canvas style={{margin: '0 auto'}} id="grid">
 
                 </canvas>
             </div>
