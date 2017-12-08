@@ -9,10 +9,10 @@ class Grid extends Component {
             w: 0,
             h: 0,
             me: {
-              x:1, y:1,
+                x: 1, y: 1,
             },
             elements: [],
-          };
+        };
         this.width = 570;
         this.height = 570;
         this.step = 30;
@@ -21,7 +21,7 @@ class Grid extends Component {
 
     componentDidMount() {
         let canvas = document.getElementById('grid');
-        let img =document.getElementById("sword");
+        let img = document.getElementById("sword");
 
         canvas.width = this.width;
         canvas.height = this.height;
@@ -54,7 +54,7 @@ class Grid extends Component {
     }
 
 
-    onClickKey = (e) => {
+    onClickKey = async (e) => {
 
         let newX = this.state.me.x;
         let newY = this.state.me.y;
@@ -91,12 +91,45 @@ class Grid extends Component {
         if (newX > 19) {
             newX = 19;
         }
+        
+        const newPos = { x: newX, y: newY };
+        try {
+            const moveResult = await API.move(newPos);
+            console.log(moveResult.message);
+            if (['ACTION_REQUIRED', 'ACTION_POSSIBLE'].includes(moveResult.message)) {
+                this.setState({ me: newPos }, () => {
+                    this.startAction();
+                });
+            } else if (moveResult.message === 'DONE') {
+                this.setState({ me: newPos });
+            } else if (moveResult.message === 'RESET') {
+                alert('Zajebali ma...');
+                this.setState({ me: { x: 1, y: 1 } });
+            } else if (moveResult.message === 'INVALID_POSITION') {
+                // ta nic...
+            } else {
+                console.log('API je nedokumentovane a toto je nepreskumany stav');
+            }
+        } catch (e) {
+            alert(e);
+        }
+    }
 
-        this.setState({
-            me: { x: newX, y: newY },
-        }, () => {
-            console.log(this.state);
-        });
+    startAction = async () => {
+        try {
+            const akcia = await API.akcia();
+            const odpoved = prompt(akcia.info);
+            const odpr = await API.odpovedaj(odpoved);
+            alert(odpr);
+            // const odppr = parseInt(odpr);
+            // if (odppr === -1) {
+            //     alert('Zle');
+            // } else if (odppr === 1) {
+            //     console.log('CORRECT');
+            // }
+        } catch (e) {
+            alert(e);
+        }
     }
 
     drawAllElements = () => {
@@ -123,7 +156,7 @@ class Grid extends Component {
         this.ctx.fillRect(x * this.step, y * this.step, this.step, this.step);
     }
 
-    drawSword = (x, y) =>{
+    drawSword = (x, y) => {
         x = x - 1;
         y = y - 1;
         this.ctx.drawImage(this.img, x * this.step, y * this.step, 30, 30);
@@ -178,6 +211,7 @@ class Grid extends Component {
         } catch (e) {
             alert(e);
         }
+
     }
 
     render() {
@@ -188,7 +222,7 @@ class Grid extends Component {
 
         return (
             <div>
-                <img id='sword' width={30} height={30} src={process.env.PUBLIC_URL + 'sword.png'}/>
+                <img id='sword' width={30} height={30} src={process.env.PUBLIC_URL + 'sword.png'} />
                 <canvas id="grid">
 
                 </canvas>
