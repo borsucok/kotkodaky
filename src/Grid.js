@@ -45,7 +45,7 @@ class Grid extends Component {
         window.setTimeout(async () => {
             await this.refresh();
             this.autoRefresh();
-        }, 1000);
+        }, 200);
     }
 
     async login() {
@@ -190,7 +190,6 @@ class Grid extends Component {
     drawSword = (x, y) => {
         x = x - 1;
         y = y - 1;
-        console.log(this.img);
         this.ctx.drawImage(this.img, x * this.step, y * this.step, this.step, this.step);
     }
 
