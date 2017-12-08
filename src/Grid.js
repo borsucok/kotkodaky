@@ -9,7 +9,7 @@ class Grid extends Component {
             w: 0,
             h: 0,
             me: {
-              x:0, y:0,
+              x:1, y:1,
             },
             elements: [],
           };
@@ -94,9 +94,10 @@ class Grid extends Component {
         this.state.elements.forEach((guy) => {
             this.drawGuy(guy.x, guy.y)
         })
+        this.drawGuy(this.state.me.x, this.state.me.y, true)
     }
 
-    drawGuy = (x, y) => {
+    drawGuy = (x, y, me = false) => {
         x = x - 1;
         y = y - 1;
         this.ctx.fillRect(x * 50, y * 50, 50, 50);
