@@ -94,9 +94,13 @@ class Grid extends Component {
         });
     }
 
-    drawAllGuy = () => {
+    drawAllElements = () => {
         this.state.elements.forEach((guy) => {
-            this.drawGuy(guy.x, guy.y)
+            if(guy.type === 'user'){
+                this.drawGuy(guy.x, guy.y)
+            } else {
+                this.drawSword(guy.x, guy.y)
+            }
         })
         this.drawGuy(this.state.me.x, this.state.me.y, true)
     }
@@ -104,6 +108,13 @@ class Grid extends Component {
     drawGuy = (x, y, me = false) => {
         x = x - 1;
         y = y - 1;
+
+        if(me){
+            this.ctx.fillStyle = "red";
+        } else {
+            this.ctx.fillStyle = "black";
+        }
+
         this.ctx.fillRect(x * this.step, y * this.step, this.step, this.step);
     }
 
@@ -151,7 +162,7 @@ class Grid extends Component {
 
     redrawAll = () => {
         this.cleanAll();
-        this.drawAllGuy();
+        this.drawAllElements();
         this.drawSword(3,6);
     }
 
