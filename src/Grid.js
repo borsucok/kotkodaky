@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import API from './API';
 
 class Grid extends Component {
@@ -7,25 +6,13 @@ class Grid extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            guys: [
-                {
-                    id: 1,
-                    x: 1,
-                    y: 1
-                },
-                {
-                    id: 1,
-                    x: 3,
-                    y: 1
-                },
-                {
-                    id: 5,
-                    x: 6,
-                    y: 1
-                }
-            ]
-        }
-
+            w: 0,
+            h: 0,
+            me: {
+              x:0, y:0,
+            },
+            elements: [],
+          };
         this.width = 950;
         this.height = 950;
         this.ctx = null;
@@ -42,13 +29,15 @@ class Grid extends Component {
         this.img = img;
         this.redrawAll();
         document.onkeydown = this.onClickKey;
+
+        this.login();
     }
 
     async login() {
         try {
             await API.join('Kotkodaky_8', 'kikirik');
-            const myPos = await API.getMyPosition();
-            console.log(myPos);
+            const betterBoard = await API.betterBoard();
+            this.setState(betterBoard);
         }
         catch (e) {
             alert(e);
@@ -59,22 +48,22 @@ class Grid extends Component {
 
     onClickKey = (e) => {
 
-        let newX = this.state.guys[0].x;
-        let newY = this.state.guys[0].y;
+        let newX = this.state.me.x;
+        let newY = this.state.me.y;
 
-        if (e.keyCode == '38') {
+        if (e.keyCode === '38') {
             // alert('up')
             newY -= 1;
         }
-        if (e.keyCode == '40') {
+        if (e.keyCode === '40') {
             // alert('down')
             newY += 1;
         }
-        if (e.keyCode == '37') {
+        if (e.keyCode === '37') {
             // alert('left')
             newX -= 1;
         }
-        if (e.keyCode == "39") {
+        if (e.keyCode === "39") {
             // alert('right')
             newX += 1;
         }
@@ -96,15 +85,13 @@ class Grid extends Component {
         }
 
 
-        this.setState((prevState) => {
-            prevState.guys[0].x = newX;
-            prevState.guys[0].y = newY;
-            return prevState;
-        })
+        this.setState({
+            me: { x: newX, y: newY },
+        });
     }
 
     drawAllGuy = () => {
-        this.state.guys.forEach((guy) => {
+        this.state.elements.forEach((guy) => {
             this.drawGuy(guy.x, guy.y)
         })
     }
