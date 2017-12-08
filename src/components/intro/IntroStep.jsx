@@ -20,18 +20,12 @@ class IntroStep extends Component {
         if (step === 1) {
             stepContent = (
                 <div>
-                    <h1>Koľko slniečka na mňa dopadne?</h1>
+                    <h1>Chceš sa zabaviť?</h1>
                     <span className="intro-description">
-                        Pomôžem ti zistiť energetický potenciál v danej oblasti. Oplatí sa nám
-                        inštalovať fotovolatický panel?
+                        Bombová hra, ktorá ťa zbaví nudy?
                     </span>
-                    <div
-                        className="intro-image"
-                        style={{
-                            backgroundImage:
-                                "url('" + process.env.PUBLIC_URL + "/icons/intro/step-1.svg')",
-                        }}
-                    />
+                    <br/>
+                    <br/>
                     <span className="steps-container">
                         {this.getHtmlCircle(1, true)}
                         {this.getHtmlCircle(2)}
@@ -42,18 +36,12 @@ class IntroStep extends Component {
         } else if (step === 2) {
             stepContent = (
                 <div>
-                    <h1>Júúúj! Veľa vody.</h1>
+                    <h1>Multiplayer.</h1>
                     <span className="intro-description">
-                        Pozri si, ako sa bude v danej oblasti rozlievať voda v prípade silného
-                        dažďa.
+                        Zahraj sa s kamošmi počas prestávky.
                     </span>
-                    <div
-                        className="intro-image"
-                        style={{
-                            backgroundImage:
-                                "url('" + process.env.PUBLIC_URL + "/icons/intro/step-2.svg')",
-                        }}
-                    />
+                    <br/>
+                    <br/>
                     <span className="steps-container">
                         {this.getHtmlCircle(1)}
                         {this.getHtmlCircle(2, true)}
@@ -64,18 +52,12 @@ class IntroStep extends Component {
         } else if (step === 3) {
             stepContent = (
                 <div>
-                    <h1>Tu by som chcel bývať.</h1>
+                    <h1>Poďme na to.</h1>
                     <span className="intro-description">
-                        Vyber si oblasť a spoločne vyhodnotíme, ako je dané miesto bezpečné a koľko
-                        vďaka nemu ušetríš.
+                        a dávaj bacha appka je návyková
                     </span>
-                    <div
-                        className="intro-image"
-                        style={{
-                            backgroundImage:
-                                "url('" + process.env.PUBLIC_URL + "/icons/intro/step-3.svg')",
-                        }}
-                    />
+                    <br/>
+                    <br/>
                     <span className="steps-container">
                         {this.getHtmlCircle(1)}
                         {this.getHtmlCircle(2)}

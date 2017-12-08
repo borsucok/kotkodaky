@@ -14,9 +14,9 @@ class Grid extends Component {
             elements: [],
           };
         this.ctx = null;
-        this.width = 760;
-        this.height = 760;
-        this.step = 40;
+        this.width = 570;
+        this.height = 570;
+        this.step = 30;
     }
 
     componentDidMount() {
@@ -233,6 +233,9 @@ class Grid extends Component {
 
         return (
             <div>
+                <h1>
+                    Šabľovačka pri ktorej sa vyblázniš
+                </h1>
                 <img style={{display: 'none'}} id='grass' width={30} height={30} src={process.env.PUBLIC_URL + 'grass.jpg'}/>
                 <img style={{display: 'none'}} id='sword' width={30} height={30} src={process.env.PUBLIC_URL + 'sword.png'}/>
                 <img style={{display: 'none'}} id='person' width={30} height={30} src={process.env.PUBLIC_URL + 'person.png'}/>
