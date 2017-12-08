@@ -35,7 +35,9 @@ class Grid extends Component {
         try {
             await API.join('Kotkodaky_8', 'kikirik');
             const betterBoard = await API.betterBoard();
-            this.setState(betterBoard);
+            this.setState(betterBoard, () => {
+                console.log(this.state);
+            });
         }
         catch (e) {
             alert(e);
@@ -48,19 +50,19 @@ class Grid extends Component {
         let newX = this.state.me.x;
         let newY = this.state.me.y;
 
-        if (e.keyCode === '38') {
+        if (e.keyCode === 38) {
             // alert('up')
             newY -= 1;
         }
-        if (e.keyCode === '40') {
+        if (e.keyCode === 40) {
             // alert('down')
             newY += 1;
         }
-        if (e.keyCode === '37') {
+        if (e.keyCode === 37) {
             // alert('left')
             newX -= 1;
         }
-        if (e.keyCode === "39") {
+        if (e.keyCode === 39) {
             // alert('right')
             newX += 1;
         }
@@ -81,9 +83,10 @@ class Grid extends Component {
             newX = 19;
         }
 
-
         this.setState({
             me: { x: newX, y: newY },
+        }, () => {
+            console.log(this.state);
         });
     }
 
