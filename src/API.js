@@ -258,6 +258,47 @@ class API {
     }
     return null;
   }
+
+  async betterBoard() {
+    const b = await this.board();
+    const bb = {
+      w: 0,
+      h: 0,
+      me: {
+        x:0, y:0,
+      },
+      elements: []
+    };
+    for (const p of b) {
+      if (p.position.data.x > bb.w) {
+        bb.w = p.position.data.x;
+      }
+      if (p.position.data.y > bb.h) {
+        bb.h = p.position.data.y;
+      }
+      for (const pc of p.pieces) {
+        if (pc.playerId === 8) {
+          bb.me = p.position.data;
+        } else {
+          bb.elements.push({
+            type: 'user',
+            x: p.position.data.x,
+            y: p.position.data.y,
+            name: pc.name
+          });
+        }
+      }
+      if (p.action) {
+        bb.elements.push({
+          type: 'sword',
+          x: p.position.data.x,
+          y: p.position.data.y,
+          name: null
+        });
+      }
+    }
+    return bb;
+  }
 }
 
 export default new API();
