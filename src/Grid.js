@@ -129,7 +129,7 @@ class Grid extends Component {
             } else if (moveResult.message === 'DONE') {
                 this.setState({ me: newPos });
             } else if (moveResult.message === 'RESET') {
-                alert('Zajebali ma...');
+                alert('Som mrtvy...au');
                 this.setState({ me: { x: 1, y: 1 } });
             } else if (moveResult.message === 'INVALID_POSITION') {
                 // ta nic...
