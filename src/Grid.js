@@ -13,8 +13,9 @@ class Grid extends Component {
             },
             elements: [],
           };
-        this.width = 950;
-        this.height = 950;
+        this.width = 570;
+        this.height = 570;
+        this.step = 30;
         this.ctx = null;
     }
 
@@ -103,13 +104,13 @@ class Grid extends Component {
     drawGuy = (x, y, me = false) => {
         x = x - 1;
         y = y - 1;
-        this.ctx.fillRect(x * 50, y * 50, 50, 50);
+        this.ctx.fillRect(x * this.step, y * this.step, this.step, this.step);
     }
 
     drawSword = (x, y) =>{
         x = x - 1;
         y = y - 1;
-        this.ctx.drawImage(this.img, x * 50, y * 50, 30, 30);
+        this.ctx.drawImage(this.img, x * this.step, y * this.step, 30, 30);
     }
 
     drawGrid = (w, h, step) => {
@@ -145,7 +146,7 @@ class Grid extends Component {
         //     let y = guy.y - 1;
         //     this.ctx.clearRect(x * 50,y * 50,50,50)
         // })
-        this.drawGrid(this.width, this.height, 50);
+        this.drawGrid(this.width, this.height, this.step);
     }
 
     redrawAll = () => {
