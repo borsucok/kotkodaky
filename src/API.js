@@ -9,6 +9,10 @@ class API {
     this.password = null;
   }
 
+  websocketUrl() {
+    return `wss://bciapi.eu-west-1.elasticbeanstalk.com/gs-guide-websocket`
+  }
+
   serializeQueryParams(parameters) {
     const str = [];
     for (let p in parameters) {
