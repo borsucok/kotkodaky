@@ -34,13 +34,18 @@ class Grid extends Component {
         this.login();
     }
 
+    autoRefresh() {
+        window.setTimeout(async () => {
+            await this.refresh();
+            this.autoRefresh();
+        }, 1000);
+    }
+
     async login() {
         try {
             await API.join('Kotkodaky_8', 'kikirik');
-            const betterBoard = await API.betterBoard();
-            this.setState(betterBoard, () => {
-                console.log(this.state);
-            });
+            await this.refresh();
+            this.autoRefresh();
         }
         catch (e) {
             alert(e);
@@ -166,6 +171,15 @@ class Grid extends Component {
         this.drawSword(3,6);
     }
 
+    refresh = async () => {
+        try {
+            const betterBoard = await API.betterBoard();
+            this.setState(betterBoard);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
     render() {
 
         if (this.ctx) {
@@ -178,7 +192,6 @@ class Grid extends Component {
                 <canvas id="grid">
 
                 </canvas>
-                <button onClick={this.redrawAll}>CLEAR ALL</button>
             </div>
         )
     }
