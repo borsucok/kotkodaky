@@ -1,0 +1,115 @@
+.upload-image{
+  display: block;
+  margin: 80px auto 0 auto;
+}
+.upload-form-container{
+  background: #fff;
+  width: 500px;
+  text-align: center;
+  padding: 20px 30px 40px 30px;
+  margin: 0 auto;
+  position: relative;
+
+  input{
+    width: 100%;
+    height: 44px;
+    border-radius: 5px;
+    background: #f1f1f1;
+    font-size: 18px;
+    text-align: left;
+    color: #aaaaaa;
+    padding: 20px;
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      color: #aaaaaa;
+    }
+    &::-moz-placeholder { /* Firefox 19+ */
+      color: #aaaaaa;
+    }
+    &:-ms-input-placeholder { /* IE 10+ */
+      color: #aaaaaa;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+      color: #aaaaaa;
+    }
+  }
+
+  .select-style {
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+
+  }
+
+  .select-style select {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    background: #f1f1f1;
+    margin-top: 10px;
+
+    background-image: url('/assets/svg/drop-down.svg');
+    background-position: center right 20px;
+    background-repeat: no-repeat;
+    z-index: 10000;
+  }
+
+  .select-style select:focus {
+    outline: none;
+  }
+
+  .upload-button{
+    width: 281px;
+    height: 44px;
+    border-radius: 22px;
+    background-color: #1b71b3;
+    font-size: 20px;
+    font-weight: 600;
+    color: #FFF;
+    border: none;
+
+    .icon{
+      top:-1px !important;
+      margin-right: 10px;
+    }
+  }
+
+  .upload-file{
+    width: 100%;
+    height: 44px;
+    border-radius: 5px;
+    margin: 10px 0 40px 0;
+    background: #f1f1f1;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: middle;
+
+    .icon{
+    }
+  }
+
+  .link-back{
+    float: left;
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: solid 1px #f1f1f1;
+    font-size: 20px;
+    font-weight: 600;
+    background: url('/assets/svg/back.svg') no-repeat center left 10px;
+    margin-bottom: 25px;
+    vertical-align: middle;
+    padding: 10px 10px 10px 35px;
+  }
+  
+  .link-back:visited{
+    color: #000;
+  }
+
+}
