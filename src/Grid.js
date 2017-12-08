@@ -9,19 +9,19 @@ class Grid extends Component {
             w: 0,
             h: 0,
             me: {
-              x:1, y:1,
+                x: 1, y: 1,
             },
             elements: [],
           };
+        this.ctx = null;
         this.width = 760;
         this.height = 760;
         this.step = 40;
-        this.ctx = null;
     }
 
     componentDidMount() {
         let canvas = document.getElementById('grid');
-        let img =document.getElementById("sword");
+        let img = document.getElementById("sword");
 
         let me =document.getElementById("me");
         let person =document.getElementById("person");
@@ -61,7 +61,7 @@ class Grid extends Component {
     }
 
 
-    onClickKey = (e) => {
+    onClickKey = async (e) => {
 
         let newX = this.state.me.x;
         let newY = this.state.me.y;
@@ -98,12 +98,45 @@ class Grid extends Component {
         if (newX > 19) {
             newX = 19;
         }
+        
+        const newPos = { x: newX, y: newY };
+        try {
+            const moveResult = await API.move(newPos);
+            console.log(moveResult.message);
+            if (['ACTION_REQUIRED', 'ACTION_POSSIBLE'].includes(moveResult.message)) {
+                this.setState({ me: newPos }, () => {
+                    this.startAction();
+                });
+            } else if (moveResult.message === 'DONE') {
+                this.setState({ me: newPos });
+            } else if (moveResult.message === 'RESET') {
+                alert('Zajebali ma...');
+                this.setState({ me: { x: 1, y: 1 } });
+            } else if (moveResult.message === 'INVALID_POSITION') {
+                // ta nic...
+            } else {
+                console.log('API je nedokumentovane a toto je nepreskumany stav');
+            }
+        } catch (e) {
+            alert(e);
+        }
+    }
 
-        this.setState({
-            me: { x: newX, y: newY },
-        }, () => {
-            console.log(this.state);
-        });
+    startAction = async () => {
+        try {
+            const akcia = await API.akcia();
+            const odpoved = prompt(akcia.info);
+            const odpr = await API.odpovedaj(odpoved);
+            alert(odpr);
+            // const odppr = parseInt(odpr);
+            // if (odppr === -1) {
+            //     alert('Zle');
+            // } else if (odppr === 1) {
+            //     console.log('CORRECT');
+            // }
+        } catch (e) {
+            alert(e);
+        }
     }
 
     drawAllElements = () => {
@@ -136,7 +169,7 @@ class Grid extends Component {
         // this.ctx.fillRect(x * this.step, y * this.step, this.step, this.step);
     }
 
-    drawSword = (x, y) =>{
+    drawSword = (x, y) => {
         x = x - 1;
         y = y - 1;
         console.log(this.img);
@@ -146,29 +179,22 @@ class Grid extends Component {
     drawGrid = (w, h, step) => {
 
         let ctx = this.ctx;
-        ctx.drawImage(document.getElementById("grass"),0,0,this.width, this.height);
+        // ctx.drawImage(document.getElementById("grass"),0,0,this.width, this.height);
 
         ctx.beginPath();
         for (let x = 0; x <= w; x += step) {
             ctx.moveTo(x, 0);
             ctx.lineTo(x, h);
         }
-        // set the color of the line
-        ctx.strokeStyle = 'rgb(255,255,255)';
+        ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.lineWidth = 1;
-        // the stroke will actually paint the current path
         ctx.stroke();
-        // for the sake of the example 2nd path
         ctx.beginPath();
         for (let y = 0; y <= h; y += step) {
             ctx.moveTo(0, y);
             ctx.lineTo(w, y);
         }
-        // set the color of the line
-        // ctx.strokeStyle = 'rgb(20,20,20)';
-        // just for fun
         ctx.lineWidth = 1;
-        // for your original question - you need to stroke only once
         ctx.stroke();
 
 
@@ -196,6 +222,7 @@ class Grid extends Component {
         } catch (e) {
             alert(e);
         }
+
     }
 
     render() {
@@ -210,7 +237,7 @@ class Grid extends Component {
                 <img style={{display: 'none'}} id='sword' width={30} height={30} src={process.env.PUBLIC_URL + 'sword.png'}/>
                 <img style={{display: 'none'}} id='person' width={30} height={30} src={process.env.PUBLIC_URL + 'person.png'}/>
                 <img style={{display: 'none'}} id='me' width={30} height={30} src={process.env.PUBLIC_URL + 'me.png'}/>
-                <canvas id="grid">
+                <canvas style={{margin: '0 auto'}} id="grid">
 
                 </canvas>
             </div>

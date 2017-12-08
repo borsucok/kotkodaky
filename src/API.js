@@ -74,7 +74,7 @@ class API {
 
     if (body && !Object.keys(body).length) {
       body = undefined;
-    } else {
+    } else if (typeof(body) === "object") {
       body = JSON.stringify(body);
     }
 
@@ -92,14 +92,13 @@ class API {
     })
       .then(response => {
         if (response.ok) {
+          if (url.indexOf('akcija') > -1 && method === 'POST') {
+            return response.text();
+          }
           if (
             response.headers.get('Content-Type').includes('application/json')
           ) {
             return response.json();
-          } else if (
-            response.headers.get('Content-Type').includes('application/pdf')
-          ) {
-            return response.blob();
           }
           return {};
         } else {
@@ -109,10 +108,7 @@ class API {
         }
       })
       .catch(error => {
-        return error.response.json().then(error_details => {
-          error.details = error_details;
-          throw error;
-        });
+        return error;
       });
   }
 
@@ -234,8 +230,8 @@ class API {
     let form = {};
 
     headers = Object.assign({}, headers, this.setAuthHeaders(headers));
-    headers['Accept'] = ['text/plain'];
-    headers['Content-Type'] = ['text/plain'];
+    headers['Accept'] = ['application/json'];
+    headers['Content-Type'] = ['application/json'];
 
     return this.request(
       'POST',
